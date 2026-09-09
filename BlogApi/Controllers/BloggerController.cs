@@ -1,4 +1,5 @@
 ﻿using BlogApi.Models;
+using BlogApi.Models.DIOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MySqlConnector;
@@ -49,7 +50,7 @@ namespace BlogApi.Controllers
         }
 
         [HttpPost]
-        public Blogger AddNewBlogger(Blogger blogger)
+        public Blogger AddNewBlogger(AddBloggerDTOs blogger)
         {
 
             var connector = new MySqlConnection(ConnectionString);
@@ -91,7 +92,7 @@ namespace BlogApi.Controllers
             var connector = new MySqlConnection (ConnectionString);
             connector.Open();
 
-
+                
 
             connector.Close();
 
@@ -101,7 +102,22 @@ namespace BlogApi.Controllers
         [HttpDelete]
         public object DeleteBlogger(int id)
         {
-            return null;
+
+            var connector = new MySqlConnection(ConnectionString);
+            connector.Open();
+
+            var sql = $"DELETE FROM blogger WHERE id = @id";
+
+            var cmd = new MySqlCommand (sql, connector);
+
+            cmd.Parameters.AddWithValue (@"id", id);
+
+            cmd.ExecuteNonQuery();
+
+            connector.Close();
+
+            return new {message = "Sikeres törlés!" };
+
         }
     }
 }
