@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MySqlConnector;
+using System.Security.Cryptography;
 
 namespace BlogApi.Controllers
 {
@@ -48,14 +49,52 @@ namespace BlogApi.Controllers
         }
 
         [HttpPost]
-        public object AddNewBlogger(Blogger blogger)
+        public Blogger AddNewBlogger(Blogger blogger)
         {
-            return null;
+
+            var connector = new MySqlConnection(ConnectionString);
+            connector.Open();
+
+            var blg = new Blogger
+            {
+
+                Name = blogger.Name,
+                Email = blogger.Email,
+                Age = blogger.Age,
+                Password = blogger.Password,
+                RegistrationTime = DateTime.Now
+
+            };
+
+            var sql = $"INSERT INTO `blogger`(`Name`, `Email`, `Age`, `Password`, `RegistrationTime`) VALUES (@name, @email, @age, @password, @registrationtime)";
+
+            var cmd = new MySqlCommand(sql, connector);
+
+            cmd.Parameters.AddWithValue("@name", blg.Name);
+            cmd.Parameters.AddWithValue("@email", blg.Email);
+            cmd.Parameters.AddWithValue("@age", blg.Age);
+            cmd.Parameters.AddWithValue("@password", blg.Password);
+            cmd.Parameters.AddWithValue("@registrationtime", blg.RegistrationTime);
+
+            cmd.ExecuteNonQuery();
+
+            connector.Close();
+
+            return blg;
+
         }
 
         [HttpPut]
         public object UpdateBlogger(int id, Blogger blogger)
         {
+
+            var connector = new MySqlConnection (ConnectionString);
+            connector.Open();
+
+
+
+            connector.Close();
+
             return null;
         }
 
