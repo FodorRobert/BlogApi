@@ -87,10 +87,10 @@ namespace BlogApi.Controllers
         }
 
         [HttpPut]
-        public UpdateBloggerDTOs UpdateBlogger([FromQuery]int id, [FromBody] UpdateBloggerDTOs updateBloggerDTO)
+        public UpdateBloggerDTOs UpdateBlogger([FromQuery] int id, [FromBody] UpdateBloggerDTOs updateBloggerDTO)
         {
 
-            var connector = new MySqlConnection (ConnectionString);
+            var connector = new MySqlConnection(ConnectionString);
             connector.Open();
 
             var sql = @"UPDATE `blogger` SET `name` = @name, `email` = @email, `age` = @age, `password` = @password
@@ -128,15 +128,15 @@ namespace BlogApi.Controllers
 
             var sql = $"DELETE FROM blogger WHERE id = @id";
 
-            var cmd = new MySqlCommand (sql, connector);
+            var cmd = new MySqlCommand(sql, connector);
 
-            cmd.Parameters.AddWithValue (@"id", id);
+            cmd.Parameters.AddWithValue(@"id", id);
 
             cmd.ExecuteNonQuery();
 
             connector.Close();
 
-            return new {message = "Sikeres törlés!" };
+            return new { message = "Sikeres törlés!" };
 
         }
 
@@ -181,7 +181,7 @@ namespace BlogApi.Controllers
 
             var datareader = cmd.ExecuteReader();
 
-            while(datareader.Read())
+            while (datareader.Read())
             {
                 var bloggerOwnPosts = new
                 {
@@ -197,7 +197,7 @@ namespace BlogApi.Controllers
             return OnPost;
         }
 
-        [HttpGet]
+        [HttpGet("NumberOfPosts")]
         public object GetNumberOfPosts()
         {
             var connector = new MySqlConnection(ConnectionString);
@@ -212,6 +212,34 @@ namespace BlogApi.Controllers
             connector.Close();
 
             return new { message = $"Posztok száma : {db}" };
+        }
+
+        [HttpGet("BloggerPostsNumber")]
+        public object BloggerPostsNumber()
+        {
+            var connector = new MySqlConnection(ConnectionString);
+            connector.Open();
+
+            var sql = $"SELECT `Name`, COUNT(*) FROM `blogger` INNER JOIN blogpost ON blogger.Id-blogpost.blogId GROUP BY blogger.Id HAVING `id` = 11;";
+
+            var cmd = new MySqlCommand(sql, connector);
+            cmd.Parameters.AddWithValue("@id", id);
+
+            var datareader = cmd.ExecuteReader();
+
+            if(datareader.Read() == true)
+            {
+                var bloggerpostsnumber = new
+                {
+                    Name = datareader.GetString[0],
+                    NumberOfPosts = datareader.GetInt32(1),
+                };
+                return bloggerpostsnumber;
+            }
+
+            connector.Close();
+
+            return null;
         }
     }
 }
