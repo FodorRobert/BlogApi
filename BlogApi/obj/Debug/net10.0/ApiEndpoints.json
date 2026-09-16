@@ -2,7 +2,7 @@
   {
     "ContainingType": "BlogApi.Controllers.BloggerController",
     "Method": "GetAllBlogger",
-    "RelativePath": "api/Blogger",
+    "RelativePath": "blogger",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -22,7 +22,7 @@
   {
     "ContainingType": "BlogApi.Controllers.BloggerController",
     "Method": "AddNewBlogger",
-    "RelativePath": "api/Blogger",
+    "RelativePath": "blogger",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -48,7 +48,7 @@
   {
     "ContainingType": "BlogApi.Controllers.BloggerController",
     "Method": "UpdateBlogger",
-    "RelativePath": "api/Blogger",
+    "RelativePath": "blogger",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
@@ -59,17 +59,27 @@
         "IsRequired": false
       },
       {
-        "Name": "blogger",
-        "Type": "BlogApi.Models.Blogger",
+        "Name": "updateBloggerDTO",
+        "Type": "BlogApi.Models.DTOs.UpdateBloggerDTOs",
         "IsRequired": true
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "BlogApi.Models.DTOs.UpdateBloggerDTOs",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "BlogApi.Controllers.BloggerController",
     "Method": "DeleteBlogger",
-    "RelativePath": "api/Blogger",
+    "RelativePath": "blogger",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,

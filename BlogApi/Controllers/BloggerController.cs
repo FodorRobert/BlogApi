@@ -8,7 +8,7 @@ using System.Security.Cryptography;
 
 namespace BlogApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("blogger")]
     [ApiController]
     public class BloggerController : ControllerBase
     {
@@ -87,7 +87,7 @@ namespace BlogApi.Controllers
         }
 
         [HttpPut]
-        public UpdateBloggerDTO UpdateBlogger([FromQuery]int id, [FromBody]UpdateBloggerDTO updateBloggerDTO)
+        public UpdateBloggerDTOs UpdateBlogger([FromQuery]int id, [FromBody] UpdateBloggerDTOs updateBloggerDTO)
         {
 
             var connector = new MySqlConnection (ConnectionString);
@@ -102,11 +102,11 @@ namespace BlogApi.Controllers
             cmd.Parameters.AddWithValue("@email", updateBloggerDTO.Email);
             cmd.Parameters.AddWithValue("@age", updateBloggerDTO.Age);
             cmd.Parameters.AddWithValue("@password", updateBloggerDTO.Password);
-            cmd.Parameters.AddWithValue("@id", updateBloggerDTO.id);
+            cmd.Parameters.AddWithValue("@id", id);
 
             cmd.ExecuteNonQuery();
 
-            var updateBlogger = new UpdateBloggerDTO
+            var updateBlogger = new UpdateBloggerDTOs
             {
                 Name = updateBloggerDTO.Name,
                 Email = updateBloggerDTO.Email,
@@ -116,7 +116,7 @@ namespace BlogApi.Controllers
 
             connector.Close();
 
-            return null;
+            return updateBlogger;
         }
 
         [HttpDelete]

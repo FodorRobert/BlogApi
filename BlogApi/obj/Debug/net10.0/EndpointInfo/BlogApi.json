@@ -13,7 +13,7 @@
     }
   ],
   "paths": {
-    "/api/Blogger": {
+    "/blogger": {
       "get": {
         "tags": [
           "Blogger"
@@ -119,17 +119,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Blogger"
+                "$ref": "#/components/schemas/UpdateBloggerDTOs"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/Blogger"
+                "$ref": "#/components/schemas/UpdateBloggerDTOs"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/Blogger"
+                "$ref": "#/components/schemas/UpdateBloggerDTOs"
               }
             }
           },
@@ -137,7 +137,24 @@
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateBloggerDTOs"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateBloggerDTOs"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateBloggerDTOs"
+                }
+              }
+            }
           }
         }
       },
@@ -1544,6 +1561,79 @@
       },
       "Type": { },
       "TypeInfo": { },
+      "UpdateBloggerDTOs": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "email": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "age": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "format": "int32"
+          },
+          "password": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "httpContext": {
+            "$ref": "#/components/schemas/HttpContext"
+          },
+          "request": {
+            "$ref": "#/components/schemas/HttpRequest"
+          },
+          "response": {
+            "$ref": "#/components/schemas/HttpResponse"
+          },
+          "routeData": {
+            "$ref": "#/components/schemas/RouteData"
+          },
+          "modelState": {
+            "type": [
+              "null",
+              "object"
+            ],
+            "additionalProperties": {
+              "$ref": "#/components/schemas/ModelStateEntry"
+            }
+          },
+          "controllerContext": {
+            "$ref": "#/components/schemas/ControllerContext"
+          },
+          "metadataProvider": {
+            "$ref": "#/components/schemas/IModelMetadataProvider"
+          },
+          "modelBinderFactory": {
+            "$ref": "#/components/schemas/IModelBinderFactory"
+          },
+          "url": {
+            "$ref": "#/components/schemas/IUrlHelper"
+          },
+          "objectValidator": {
+            "$ref": "#/components/schemas/IObjectModelValidator"
+          },
+          "problemDetailsFactory": {
+            "$ref": "#/components/schemas/ProblemDetailsFactory"
+          },
+          "user": {
+            "$ref": "#/components/schemas/ClaimsPrincipal"
+          }
+        }
+      },
       "WaitHandle": {
         "type": "object",
         "properties": {
