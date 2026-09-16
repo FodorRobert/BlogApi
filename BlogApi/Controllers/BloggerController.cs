@@ -139,5 +139,32 @@ namespace BlogApi.Controllers
             return new {message = "Sikeres törlés!" };
 
         }
+
+        [HttpGet]
+        public object GetBloggerById(int id)
+        {
+            var connector = new MySqlConnection(ConnectionString);
+
+            connector.Open();
+
+            var sql = $"SELECT `Name` FROM `blogger` " +
+                "WHERE 'id' = @id";
+
+            var cmd = new MySqlCommand(sql, connector);
+            cmd.Parameters.AddWithValue("@id", id);
+
+            var datareader = cmd.ExecuteReader();
+            datareader.Read();
+
+            var blogger = new Blogger
+            {
+                Name = datareader.GetString(0),
+                Email = datareader.GetString(1),
+            };
+
+            connector.Close();
+
+            return blogger;
+        }
     }
 }
