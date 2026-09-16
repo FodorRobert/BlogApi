@@ -166,5 +166,52 @@ namespace BlogApi.Controllers
 
             return blogger;
         }
+
+        [HttpGet]
+        public List<object> GetBloggerByBlogId(int id)
+        {
+            List<object> OnPost = new List<object>();
+            var connector = new MySqlConnection(ConnectionString);
+            connector.Open();
+
+            var sql = $"SELECT blogger.Name, blogpost.Title, blogpost.Content\r\nFROM `blogger`\r\nINNER JOIN blogpost ON blogger.Id-blogpost.blogId\r\nWHERE blogger.`id` = 4";
+
+            var cmd = new MySqlCommand(sql, connector);
+            cmd.Parameters.AddWithValue("@id", id);
+
+            var datareader = cmd.ExecuteReader();
+
+            while(datareader.Read())
+            {
+                var bloggerOwnPosts = new
+                {
+                    Name = datareader.GetString(0),
+                    Title = datareader.GetString(1),
+                    Content = datareader.GetString(2)
+                };
+                OnPost.Add(bloggerOwnPosts);
+            }
+
+            connector.Close();
+
+            return OnPost;
+        }
+
+        [HttpGet]
+        public object GetNumberOfPosts()
+        {
+            var connector = new MySqlConnection(ConnectionString);
+            connector.Open();
+
+            var sql = @"SELECT COUNT(*) FROM blogpost";
+
+            var cmd = new MySqlCommand(sql, connector);
+
+            var db = cmd.ExecuteReader();
+
+            connector.Close();
+
+            return new { message = $"Posztok száma : {db}" };
+        }
     }
 }
