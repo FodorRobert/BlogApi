@@ -1,5 +1,6 @@
 ﻿using BlogApi.Models;
 using BlogApi.Models.DIOs;
+using BlogApi.Models.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MySqlConnector;
@@ -86,13 +87,32 @@ namespace BlogApi.Controllers
         }
 
         [HttpPut]
-        public object UpdateBlogger(int id, Blogger blogger)
+        public UpdateBloggerDTO UpdateBlogger([FromQuery]int id, [FromBody]UpdateBloggerDTO updateBloggerDTO)
         {
 
             var connector = new MySqlConnection (ConnectionString);
             connector.Open();
 
-                
+            var sql = @"UPDATE `blogger` SET `name` = @name, `email` = @email, `age` = @age, `password` = @password
+                       WHERE `id` = 1;";
+
+            var cmd = new MySqlCommand(sql, connector);
+
+            cmd.Parameters.AddWithValue("@name", updateBloggerDTO.Name);
+            cmd.Parameters.AddWithValue("@email", updateBloggerDTO.Email);
+            cmd.Parameters.AddWithValue("@age", updateBloggerDTO.Age);
+            cmd.Parameters.AddWithValue("@password", updateBloggerDTO.Password);
+            cmd.Parameters.AddWithValue("@id", updateBloggerDTO.id);
+
+            cmd.ExecuteNonQuery();
+
+            var updateBlogger = new UpdateBloggerDTO
+            {
+                Name = updateBloggerDTO.Name,
+                Email = updateBloggerDTO.Email,
+                Age = updateBloggerDTO.Age,
+                Password = updateBloggerDTO.Password
+            };
 
             connector.Close();
 
